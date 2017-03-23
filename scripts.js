@@ -1,6 +1,6 @@
 const addItems = document.querySelector('.add-items');
 const itemsList = document.querySelector('.plates');
-const items = [];
+const items = JSON.parse(localStorage.getItem('items')) || [];
 
 function addItem(e){
 	e.preventDefault(); 
@@ -10,6 +10,7 @@ function addItem(e){
 		text,
 		done: false
 	}
+
 	items.push(item);
 	populateList(items, itemsList);
 	localStorage.setItem('items', JSON.stringify(items))
@@ -24,7 +25,17 @@ function populateList(plates = [], platesList){
 			<label for="item${i}">${plate.text}</label>
 		</li>`;
 	})).join("");
+}
+	
+function toggleDone(e){
 
 }
 
+populateList(items, itemsList);
+
+const checkBoxes = document.querySelectorAll('input');
+
+checkBoxes.forEach(input => input.addEventListener('click', () => alert("clicked") ))
+
 addItems.addEventListener('submit', addItem);
+
