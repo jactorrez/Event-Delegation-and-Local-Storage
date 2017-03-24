@@ -21,7 +21,7 @@ function populateList(plates = [], platesList){
 	platesList.innerHTML = (plates.map((plate, i) => {
 		return `
 		<li>
-			<input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? checked : ""}/>
+			<input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? "checked" : ""}/>
 			<label for="item${i}">${plate.text}</label>
 		</li>`;
 	})).join("");
@@ -29,13 +29,28 @@ function populateList(plates = [], platesList){
 	
 function toggleDone(e){
 
+	if(!e.target.matches('input')) return; //skip this unless it's an input 
+	const el = e.target;
+	const index = el.dataset.index;
+
+	items[index].done = !items[index].done;
+	localStorage.setItem('items', JSON.stringify(items));
+	populateList(items, itemsList);
 }
+
+
+addItems.addEventListener('submit', addItem);
+itemsList.addEventListener('click', toggleDone);
 
 populateList(items, itemsList);
 
-const checkBoxes = document.querySelectorAll('input');
 
-checkBoxes.forEach(input => input.addEventListener('click', () => alert("clicked") ))
+// Set up buttons to clear and check all
 
-addItems.addEventListener('submit', addItem);
+const clearAllBtn = document.querySelector('input[data-clearall]');
+const checkAllBtn =  document.querySelector('input[data-checkall');
+
+clearAllBtn.addEventListener('click', () => alert('clear all'));
+checkAllBtn.addEventListener('click', () => alert('check all'));
+
 
